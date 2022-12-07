@@ -1,9 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, ObjectId } from 'mongoose';
-import { CreateLocalFileDto } from 'src/local-files/dto/create-local-file.dto';
-import { LocalFilesService } from 'src/local-files/local-files.service';
-import { LocalFile } from 'src/local-files/schemas/local-file.schema';
+import { Model } from 'mongoose';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User, UserDocument } from './schemas/user.schema';
@@ -24,8 +21,8 @@ export class UserService {
     return this.userModel.find().populate('profile_picture') .exec();
   }
 
-  async update(id: ObjectId, updateUserDto: UpdateUserDto): Promise<User> {
-    const updatedUser = await this.userModel.findOneAndUpdate({id}, updateUserDto, {returnOriginal: false});
+  async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
+    const updatedUser = await this.userModel.findOneAndUpdate({id}, updateUserDto, {returnOriginal: false}).populate('profile_picture');
     return updatedUser;
   }
 }

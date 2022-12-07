@@ -17,11 +17,8 @@ export class LocalFilesService {
     return createLocalFile;
   }
 
-  findAll() {
-    return `This action returns all localFiles`;
-  }
-
-  update(id: number, updateLocalFileDto: UpdateLocalFileDto) {
-    return `This action updates a #${id} localFile`;
+  async update(id: string, updateLocalFileDto: UpdateLocalFileDto): Promise<LocalFile> {
+    const updatedUser = await this.localFileModel.findOneAndUpdate({id}, updateLocalFileDto, {returnOriginal: false});
+    return updatedUser;
   }
 }

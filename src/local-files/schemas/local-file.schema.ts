@@ -5,6 +5,8 @@ export type LocalFileDocument = HydratedDocument<LocalFile>;
 
 @Schema()
 export class LocalFile {
+
+  _id: string;
     
   @Prop()
   url: string;
