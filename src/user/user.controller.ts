@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, UseInterceptors, UploadedFile } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, UseInterceptors, UploadedFile, ParseFilePipe, FileTypeValidator, MaxFileSizeValidator, BadRequestException } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -21,11 +21,21 @@ export class UserController {
     storage: diskStorage({
       destination: './public/profile_pictures',
       filename(req, file, callback) {
+        if (!file.mimetype.includes('image')) {
+          return callback(new BadRequestException('Validation failed (expected type is .(png|jpeg|jpg))'), '');
+        }
         callback(null, Math.round(Math.random() * 1E17) + file.mimetype.replace('image/', '.'))
       },
     }),
   }))
-  async create(@Body() createUserDto: CreateUserDto, @UploadedFile() file: Express.Multer.File) {
+  async create(@Body() createUserDto: CreateUserDto, @UploadedFile(
+    new ParseFilePipe({
+      validators: [
+        new FileTypeValidator({ fileType: '.(png|jpeg|jpg)' }),
+        new MaxFileSizeValidator({ maxSize: 1024 * 1024 * 3 }), // 3mb
+      ],
+    })
+  ) file: Express.Multer.File) {
     let createProfilePictureDto: CreateLocalFileDto = {
       url: 'profile_pictures/'+file.filename,
       path: file.path,
