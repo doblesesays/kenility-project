@@ -7,7 +7,7 @@ export type LocalFileDocument = HydratedDocument<LocalFile>;
 export class LocalFile {
     
   @Prop()
-  filename: string;
+  url: string;
 
   @Prop()
   path: string;

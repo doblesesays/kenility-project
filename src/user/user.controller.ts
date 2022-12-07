@@ -17,16 +17,19 @@ export class UserController {
   ) {}
 
   @Post()
-  /* @UseInterceptors(FileInterceptor('profile_picture', {
+  @UseInterceptors(FileInterceptor('profile_picture', {
     storage: diskStorage({
-      destination: './uploadedFiles/profile_pictures'
-    })
-  })) */
-  async create(@Body() createUserDto: CreateUserDto, /* @UploadedFile() picture: Express.Multer.File */) {
+      destination: './public/profile_pictures',
+      filename(req, file, callback) {
+        callback(null, Math.round(Math.random() * 1E17) + file.mimetype.replace('image/', '.'))
+      },
+    }),
+  }))
+  async create(@Body() createUserDto: CreateUserDto, @UploadedFile() file: Express.Multer.File) {
     let createProfilePictureDto: CreateLocalFileDto = {
-      path: 'file.path',
-      filename: 'file.originalname',
-      mimetype: 'file.mimetype'
+      url: 'profile_pictures/'+file.filename,
+      path: file.path,
+      mimetype: file.mimetype
     }
     const createdProfilePicture = await this.localFilesService.create(createProfilePictureDto);
     createUserDto.profile_picture = createdProfilePicture;

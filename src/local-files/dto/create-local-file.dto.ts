@@ -1,5 +1,5 @@
 export class CreateLocalFileDto {
-    filename: string;
+    url: string;
     path: string;
     mimetype: string;
 }

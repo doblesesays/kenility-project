@@ -2,7 +2,7 @@ import { ObjectId } from "mongoose";
 
 export class LocalFile {
     id: ObjectId;
-    filename: string;
+    url: string;
     path: string;
     mimetype: string;
 }
