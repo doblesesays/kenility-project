@@ -6,11 +6,15 @@ import { ObjectId } from 'mongoose';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { Express } from 'express';
-import { LocalFileDto } from '../localFiles/dto/local-file.dto';
+import { CreateLocalFileDto } from 'src/local-files/dto/create-local-file.dto';
+import { LocalFilesService } from 'src/local-files/local-files.service';
 
 @Controller('user')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly localFilesService: LocalFilesService
+  ) {}
 
   @Post()
   /* @UseInterceptors(FileInterceptor('profile_picture', {
@@ -18,13 +22,15 @@ export class UserController {
       destination: './uploadedFiles/profile_pictures'
     })
   })) */
-  create(@Body() createUserDto: CreateUserDto, /* @UploadedFile() picture: Express.Multer.File */) {
-    let createProfilePictureDto: LocalFileDto = {
+  async create(@Body() createUserDto: CreateUserDto, /* @UploadedFile() picture: Express.Multer.File */) {
+    let createProfilePictureDto: CreateLocalFileDto = {
       path: 'file.path',
       filename: 'file.originalname',
       mimetype: 'file.mimetype'
     }
-    return this.userService.create(createUserDto, createProfilePictureDto);
+    const createdProfilePicture = await this.localFilesService.create(createProfilePictureDto);
+    createUserDto.profile_picture = createdProfilePicture;
+    return this.userService.create(createUserDto);
   }
 
   @Get()

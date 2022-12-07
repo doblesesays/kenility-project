@@ -1,7 +1,7 @@
 import * as mongoose from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
-import { LocalFile } from '../../localFiles/schemas/local-file.schema';
+import { LocalFile } from '../../local-files/schemas/local-file.schema';
 
 export type UserDocument = HydratedDocument<User>;
 
@@ -17,7 +17,7 @@ export class User {
   @Prop()
   address: string;
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'ProfilePicture' })
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'LocalFile' })
   profile_picture: LocalFile;
 }
 

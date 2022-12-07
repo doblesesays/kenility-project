@@ -1,5 +1,4 @@
-
-export class LocalFileDto {
+export class CreateLocalFileDto {
     filename: string;
     path: string;
     mimetype: string;
