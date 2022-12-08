@@ -7,10 +7,13 @@ import { LocalFilesModule } from './local-files/local-files.module';
 import { LocalFilesService } from './local-files/local-files.service';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { AuthModule } from './auth/auth.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb://127.0.0.1:27017/kenility'),
+    ConfigModule.forRoot({isGlobal: true}),
+    MongooseModule.forRoot(process.env.DB_URL,{useNewUrlParser: true}),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'public'),
     }),
