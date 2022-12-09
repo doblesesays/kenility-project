@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, UseInterceptors, UploadedFile, ParseFilePipe, MaxFileSizeValidator, BadRequestException, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, UseInterceptors, UploadedFile, ParseFilePipe, MaxFileSizeValidator, BadRequestException, UseGuards, Put, HttpException, HttpStatus } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -54,7 +54,7 @@ export class UserController {
   }
 
   @UseGuards(LocalAuthGuard)
-  @Patch(':id')
+  @Put(':id')
   @UseInterceptors(FileInterceptor('profile_picture', {
     storage: diskStorage({
       destination: './public/profile_pictures',
@@ -74,15 +74,20 @@ export class UserController {
       fileIsRequired: false
     })
   ) file: Express.Multer.File) {
+
     const updatedUser = await this.userService.update(id, updateUserDto);
-    if (file) {
-      let updateProfilePictureDto: UpdateLocalFileDto = {
-        url: 'profile_pictures/'+file.filename,
-        path: file.path,
-        mimetype: file.mimetype
+
+    if (updatedUser) {
+      if (file) {
+        let updateProfilePictureDto: UpdateLocalFileDto = {
+          url: 'profile_pictures/'+file.filename,
+          path: file.path,
+          mimetype: file.mimetype
+        }
+        updatedUser.profile_picture = await this.localFilesService.update(updatedUser.profile_picture._id, updateProfilePictureDto);
       }
-      updatedUser.profile_picture = await this.localFilesService.update(updatedUser.profile_picture._id, updateProfilePictureDto);
+      return updatedUser;
     }
-    return updatedUser;
+    throw new HttpException('User not found', HttpStatus.NOT_FOUND);
   }
 }
