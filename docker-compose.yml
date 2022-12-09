@@ -11,7 +11,7 @@ services:
       - DB_URL=mongodb://mongodb:27017/kenility
     volumes:
       - .:/usr/src/app
-      - /usr/src/app/node_modules
+      - node_modules:/usr/src/app/node_modules
       
   mongodb:
     image: mongo
@@ -21,4 +21,5 @@ services:
       - "27017:27017"
 
 volumes:
-  mongodata: 
+  mongodata:
+  node_modules: 
