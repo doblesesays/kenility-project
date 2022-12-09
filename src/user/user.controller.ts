@@ -1,14 +1,14 @@
-import { Controller, Get, Post, Body, Patch, Param, UseInterceptors, UploadedFile, ParseFilePipe, MaxFileSizeValidator, BadRequestException } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, UseInterceptors, UploadedFile, ParseFilePipe, MaxFileSizeValidator, BadRequestException, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { ObjectId } from 'mongoose';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { Express } from 'express';
 import { CreateLocalFileDto } from 'src/local-files/dto/create-local-file.dto';
 import { LocalFilesService } from 'src/local-files/local-files.service';
 import { UpdateLocalFileDto } from 'src/local-files/dto/update-local-file.dto';
+import { LocalAuthGuard } from 'src/auth/local-auth.guard';
 
 @Controller('user')
 export class UserController {
@@ -29,6 +29,7 @@ export class UserController {
       },
     }),
   }))
+  @UseGuards(LocalAuthGuard)
   async create(@Body() createUserDto: CreateUserDto, @UploadedFile(
     new ParseFilePipe({
       validators: [
@@ -46,11 +47,13 @@ export class UserController {
     return this.userService.create(createUserDto);
   }
 
+  @UseGuards(LocalAuthGuard)
   @Get()
   findAll() {
     return this.userService.findAll();
   }
 
+  @UseGuards(LocalAuthGuard)
   @Patch(':id')
   @UseInterceptors(FileInterceptor('profile_picture', {
     storage: diskStorage({

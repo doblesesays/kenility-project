@@ -5,5 +5,4 @@ export class User {
     name: string;
     last_name: string;
     address: string;
-    // profile_picture: string;
 }

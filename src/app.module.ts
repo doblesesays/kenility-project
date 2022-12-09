@@ -18,7 +18,8 @@ import { ConfigModule } from '@nestjs/config';
       rootPath: join(__dirname, '..', 'public'),
     }),
     UserModule,
-    LocalFilesModule
+    LocalFilesModule,
+    AuthModule
   ],
   controllers: [AppController],
   providers: [AppService, LocalFilesService],
