@@ -8,13 +8,14 @@ $ docker compose up -d
 
 ## Getting Started
 
-```bash
-# Import the Postman Collection
-$ KenilityProject.postman_collection.json
+- Import the Postman Collection "KenilityProject.postman_collection.json"
 
-# Add a new environment on Postman
-$ Include user_id as variable
-```
+<img width="1045" alt="image" src="https://user-images.githubusercontent.com/117100783/206751779-cb34c3fb-73a5-4203-83f4-a57e6d4afb5a.png">
+
+
+- Add a new environment and include user_id as variable
+<img width="939" alt="image" src="https://user-images.githubusercontent.com/117100783/206751951-4e20a3f3-5bdf-4366-a8a8-b27841c27136.png">
+
 
 ## Api Doc
 | Method | URL             | Content Type      | Body |
