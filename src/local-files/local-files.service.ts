@@ -17,8 +17,8 @@ export class LocalFilesService {
     return createLocalFile;
   }
 
-  async update(id: string, updateLocalFileDto: UpdateLocalFileDto): Promise<LocalFile> {
-    const updatedUser = await this.localFileModel.findOneAndUpdate({id}, updateLocalFileDto, {returnOriginal: false});
-    return updatedUser;
+  async update(_id: string, updateLocalFileDto: UpdateLocalFileDto): Promise<LocalFile> {
+    const updatedLocalFile = await this.localFileModel.findByIdAndUpdate({_id}, updateLocalFileDto, {returnOriginal: false});
+    return updatedLocalFile;
   }
 }

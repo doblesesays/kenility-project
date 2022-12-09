@@ -21,8 +21,8 @@ export class UserService {
     return this.userModel.find().populate('profile_picture') .exec();
   }
 
-  async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
-    const updatedUser = await this.userModel.findOneAndUpdate({id}, updateUserDto, {returnOriginal: false}).populate('profile_picture');
+  async update(_id: string, updateUserDto: UpdateUserDto): Promise<User> {
+    const updatedUser = await this.userModel.findByIdAndUpdate({_id}, updateUserDto, {returnOriginal: false}).populate('profile_picture');
     return updatedUser;
   }
 }
