@@ -17,8 +17,8 @@ $ Include user_id as variable
 ```
 
 ## Api Doc
-| Method | Description     | Content Type      |
-| ------ | --------------- | ----------------- |
-| GET    | /user           |                   |
-| POST   | /user           |multipart/form-data|
-| PUT    | /user/{user_id} |multipart/form-data|
+| Method | URL             | Content Type      | Body |
+| ------ | --------------- | ----------------- |------|
+| GET    | /user           |                   ||
+| POST   | /user           |multipart/form-data|name: string <br> last_name: string <br> address: string <br> profile_picture: file|
+| PUT    | /user/{user_id} |multipart/form-data|All optionals <br><br>name: string <br> last_name: string <br> address: string <br> profile_picture: file|
