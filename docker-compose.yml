@@ -2,7 +2,7 @@ version: "3"
 services:
   backend:
     depends_on:
-      - db
+      - mongodb
     restart: always
     build: .
     ports:
