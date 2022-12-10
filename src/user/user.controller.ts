@@ -9,6 +9,7 @@ import { CreateLocalFileDto } from 'src/local-files/dto/create-local-file.dto';
 import { LocalFilesService } from 'src/local-files/local-files.service';
 import { UpdateLocalFileDto } from 'src/local-files/dto/update-local-file.dto';
 import { LocalAuthGuard } from 'src/auth/local-auth.guard';
+import { IdParam } from './entities/id-param.entity';
 
 @Controller('user')
 export class UserController {
@@ -66,7 +67,7 @@ export class UserController {
       },
     }),
   }))
-  async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto, @UploadedFile(
+  async update(@Param() param: IdParam, @Body() updateUserDto: UpdateUserDto, @UploadedFile(
     new ParseFilePipe({
       validators: [
         new MaxFileSizeValidator({ maxSize: 1024 * 1024 * 3 }), // 3mb
@@ -74,6 +75,8 @@ export class UserController {
       fileIsRequired: false
     })
   ) file: Express.Multer.File) {
+    const id = param.id;
+    delete updateUserDto['profile_picture'];
 
     const updatedUser = await this.userService.update(id, updateUserDto);
 
